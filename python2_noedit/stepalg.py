@@ -1,14 +1,14 @@
 
 class StepwiseAlgorithm(object):
     def initialize(self, state):
-        u"""
+        """
         :param state: this will be the same for the whole algorithm. use it as stateful memory
         :return:
         """
         pass
 
     def step(self, current_step, state, evaluate):
-        u"""
+        """
         :param current_step:
         :param state:
         :param evaluate: when this is true, you should evaluate the current iterate
@@ -17,7 +17,7 @@ class StepwiseAlgorithm(object):
         pass
 
     def output(self, current_step, state):
-        u"""
+        """
         it's best to return a dictionary with tuples of lists as values, such as
         {
             loss: (epochs, values)
@@ -27,22 +27,22 @@ class StepwiseAlgorithm(object):
 
 
 def as_stepwise_algorithm(initialize, step, output):
-    u"""
+    """
     :param initialize: callable (state)
     :param step: callable (current_step, state, evaluate) -> steps_taken
     :param output: callable (current_step, state) -> dict
     :return:
     """
-    return type(u"AdHocStepwiseAlgorithm", (StepwiseAlgorithm,), {
-        u"initialize": lambda self, state: initialize(state),
-        u"step": lambda self, current_step, state, evaluate: step(current_step, state, evaluate),
-        u"output": lambda self, current_step, state: output(current_step, state),
+    return type("AdHocStepwiseAlgorithm", (StepwiseAlgorithm,), {
+        "initialize": lambda self, state: initialize(state),
+        "step": lambda self, current_step, state, evaluate: step(current_step, state, evaluate),
+        "output": lambda self, current_step, state: output(current_step, state),
     })()
 
 
 def run_stepwise_algorithm(algorithm, do_stop,
                            do_evaluate):
-    u"""
+    """
 
     :param algorithm:
     :param do_stop: callable (current_step, state) -> bool
