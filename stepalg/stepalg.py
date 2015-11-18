@@ -1,15 +1,13 @@
-from typing import Dict, Any, Callable
-
 
 class StepwiseAlgorithm:
-    def initialize(self, state: Dict[str, Any]):
+    def initialize(self, state: dict):
         """
         :param state: this will be the same for the whole algorithm. use it as stateful memory
         :return:
         """
         pass
 
-    def step(self, current_step: int, state: Dict[str, Any], evaluate) -> int:
+    def step(self, current_step: int, state: dict, evaluate: bool) -> int:
         """
         :param current_step:
         :param state:
@@ -18,7 +16,7 @@ class StepwiseAlgorithm:
         """
         pass
 
-    def output(self, current_step: int, state: Dict[str, Any]):
+    def output(self, current_step: int, state: dict):
         """
         it's best to return a dictionary with tuples of lists as values, such as
         {
@@ -28,7 +26,13 @@ class StepwiseAlgorithm:
         pass
 
 
-def as_stepwise_algorithm(initialize: Callable, step: Callable, output: Callable) -> StepwiseAlgorithm:
+def as_stepwise_algorithm(initialize, step, output) -> StepwiseAlgorithm:
+    """
+    :param initialize: callable (state)
+    :param step: callable (current_step, state, evaluate) -> steps_taken
+    :param output: callable (current_step, state) -> dict
+    :return:
+    """
     return type("AdHocStepwiseAlgorithm", (StepwiseAlgorithm,), {
         "initialize": lambda self, state: initialize(state),
         "step": lambda self, current_step, state, evaluate: step(current_step, state, evaluate),
@@ -36,8 +40,15 @@ def as_stepwise_algorithm(initialize: Callable, step: Callable, output: Callable
     })()
 
 
-def run_stepwise_algorithm(algorithm: StepwiseAlgorithm, do_stop: Callable[[int, dict], bool],
-                           do_evaluate: Callable[[int, int, dict], bool]):
+def run_stepwise_algorithm(algorithm: StepwiseAlgorithm, do_stop,
+                           do_evaluate):
+    """
+
+    :param algorithm:
+    :param do_stop: callable (current_step, state) -> bool
+    :param do_evaluate: callable (current_step, last_eval, state) -> bool
+    :return:
+    """
     state = dict()
     algorithm.initialize(state)
     current_step = 0

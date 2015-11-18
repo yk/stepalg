@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from typing import Dict, Any, Callable
-
 
 class StepwiseAlgorithm(object):
     def initialize(self, state):
@@ -30,6 +27,12 @@ class StepwiseAlgorithm(object):
 
 
 def as_stepwise_algorithm(initialize, step, output):
+    u"""
+    :param initialize: callable (state)
+    :param step: callable (current_step, state, evaluate) -> steps_taken
+    :param output: callable (current_step, state) -> dict
+    :return:
+    """
     return type(u"AdHocStepwiseAlgorithm", (StepwiseAlgorithm,), {
         u"initialize": lambda self, state: initialize(state),
         u"step": lambda self, current_step, state, evaluate: step(current_step, state, evaluate),
@@ -39,6 +42,13 @@ def as_stepwise_algorithm(initialize, step, output):
 
 def run_stepwise_algorithm(algorithm, do_stop,
                            do_evaluate):
+    u"""
+
+    :param algorithm:
+    :param do_stop: callable (current_step, state) -> bool
+    :param do_evaluate: callable (current_step, last_eval, state) -> bool
+    :return:
+    """
     state = dict()
     algorithm.initialize(state)
     current_step = 0
